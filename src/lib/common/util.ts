@@ -22,7 +22,8 @@ export type TypeName =
 	| 'regexp'
 	| 'object'
 	| 'string[]'
-	| 'object[]';
+	| 'object[]'
+	| 'boolean | "fail"';
 
 export type Parser<T = any> = (value: any) => T;
 
@@ -570,11 +571,12 @@ export function processOption<C extends Config>(
 		setOption(config, name, parseValue(name, value, 'string'));
 	} else if (
 		name === 'functionalCoverage' ||
-		name === 'leaveRemoteOpen' ||
 		name === 'serveOnly' ||
 		name === 'runInSync'
 	) {
 		setOption(config, name, parseValue(name, value, 'boolean'));
+	} else if (name === 'leaveRemoteOpen') {
+		setOption(config, name, parseValue(name, value, 'boolean | "fail"'));
 	} else if (name === 'coverage') {
 		let parsed: boolean | string[];
 		try {
